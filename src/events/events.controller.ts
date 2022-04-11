@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Request,
+} from '@nestjs/common';
 import { EventsService } from './events.service';
 import { Events } from './schema/events.schema';
 import { CreateEventDto } from './dto/events.dto';
@@ -18,8 +26,11 @@ export class EventsController {
     }
 
     @Post()
-    createEvent(@Body() createEventDto: CreateEventDto): Promise<Events> {
-        return this.eventsService.create(createEventDto);
+    createEvent(
+        @Body() createEventDto: CreateEventDto,
+        @Request() req,
+    ): Promise<Events> {
+        return this.eventsService.create(createEventDto, req.user);
     }
 
     @Delete(':id')

@@ -11,19 +11,22 @@ export class EventsService {
     ) {}
 
     async findAll(): Promise<Events[]> {
-        return await this.eventsModel.find().populate('message').exec();
+        return await this.eventsModel.find().populate('user').exec();
     }
 
     async findOne(id: string): Promise<Events> {
         return await this.eventsModel
             .findOne({ _id: id })
-            .populate('message')
+            .populate('user')
             .exec();
     }
 
-    async create(createEventDto: CreateEventDto): Promise<Events> {
+    async create(createEventDto: CreateEventDto, user: any): Promise<Events> {
         const createdEvent = new this.eventsModel(createEventDto);
-        return await createdEvent.save();
+        createdEvent.date = new Date();
+        createdEvent.user = user.userId;
+        await createdEvent.save();
+        return createdEvent;
     }
 
     async delete(id: string): Promise<Events> {
