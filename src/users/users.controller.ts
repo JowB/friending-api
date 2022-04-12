@@ -12,7 +12,7 @@ export class UsersController {
         return this.usersService.findAll();
     }
 
-    @Post('signup')
+    @Post('auth/signup')
     createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
         return this.usersService.create(createUserDto);
     }
